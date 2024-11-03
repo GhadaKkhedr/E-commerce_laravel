@@ -10,15 +10,15 @@
             <div class="card">
                 <div class="card-header text-center text-info "><strong><u><em>{{ __('Administration Page') }}</em></u></strong></div>
                 <div class="card-body">
-                    <div class="row" role="group">
+                    <div class="row panel-group" role="group" id="accordion">
                         <div class="col-4 text-center">
-                            <button id="ShowUsersBtn" type="button" data-target="#usersDiv" class="btn btn-outline-info" data-toggle="collapse" aria-pressed="false" autocomplete="off">Show All Users</button>
+                            <button id="ShowUsersBtn" data-parent="#accordion" type="button" data-target="#usersDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="usersDiv">Show All Users</button>
                         </div>
                         <div class="col-4 text-center">
-                            <button id="ShowcategoriesBtn" type="button" data-target="#categoriesDiv" class="btn btn-outline-info" data-toggle="collapse" aria-pressed="false" autocomplete="off">Show All Categories</button>
+                            <button id="ShowcategoriesBtn" data-parent="#accordion" type="button" data-target="#categoriesDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="categoriesDiv">Show All Categories</button>
                         </div>
                         <div class="col-4 text-center">
-                            <button id="ShowProductsBtn" type="button" data-target="#productsDiv" class="btn btn-outline-info" data-toggle="collapse" aria-pressed="false" autocomplete="off">Show All Products</button>
+                            <button id="ShowProductsBtn" data-parent="#accordion" type="button" data-target="#productsDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="productsDiv">Show All Products</button>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="container">
-        <div id="usersDiv" class="justify-content-center"> <!-- style="display:none"> -->
+        <div id="usersDiv" class="panel-collapse collapse in justify-content-center">
             <table class="table table-striped table-responsive m-5">
                 <thead class="table-info text-center">
                     <th>ID#</th>
@@ -37,6 +37,7 @@
                     <th>identity</th>
                 </thead>
                 <tbody class="text-center">
+                    @php try{
                     @foreach ($users as $user)
                     <tr>
                         @if ($user->identity === 2)
@@ -55,33 +56,51 @@
                         </td>
                     </tr>
                     @endforeach
+                    @php }catch(\Exception $e){}
                 </tbody>
-                <tfoot>
-                    <button type="button" class="btn btn-success">Add user</button>
-                </tfoot>
-            </table>
-        </div>
-        <div id="categoriesDiv" class="container text-center " style="margin-left:33%;">
-            <table class="table table-striped table-responsive m-5" style="width:33%">
-                <thead class="table-info text-center">
-                    <th>ID#</th>
-                    <th>category name</th>
-                </thead>
-                <tbody class="text-center">
-                    @foreach ($categories as $category)
-                    <tr>
-                        <td>{{$category->id}}</td>
-                        <td>{{$category->name}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <button type="button" class="btn btn-success">Add category</button>
-                </tfoot>
-            </table>
-        </div>
 
-        <div id="productsDiv" class="container text-center "><!-- style="display:none">-->
+            </table>
+        </div>
+        <div id="categoriesDiv" class=" panel-collapse collapse in text-center">
+            <div class="row mt-5">
+                <div class="col  w-50">
+                    <table class="table table-striped table-responsive ms-5">
+                        <thead class="table-info text-center">
+                            <th>ID#</th>
+                            <th>category name</th>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach ($categories as $category)
+                            <tr>
+                                <td>{{$category->id}}</td>
+                                <td>{{$category->name}}</td>
+                                <td>
+                                    <form action="{{route('home.editCategory')}}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">modify</button>
+                                    </form>
+                                    <form action="{{route('home.deleteCategory')}}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="col w-25">
+                    <form action="{{route('home.addCategory')}}" method="post">
+                        @csrf
+                        <label for="categoryName" class="form-label">add new category</label>
+                        <input type="text" name="categoryName" id="categoryName" class="form-control w-50 mx-auto">
+                        <button class="btn btn-success" type="submit">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="productsDiv" class=" panel-collapse collapse in text-center">
             <table class="table table-striped table-responsive m-5">
                 <thead class="table-info text-center">
                     <th>ID#</th>
@@ -105,9 +124,7 @@
                     </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <button type="button" class="btn btn-success">Add product</button>
-                </tfoot>
+
             </table>
         </div>
     </div>
@@ -118,6 +135,11 @@
 <!-- view all items added by this seller and add/delete/modify them -->
 
 @endif
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+
+
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

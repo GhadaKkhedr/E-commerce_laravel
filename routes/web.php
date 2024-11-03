@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 /*
@@ -33,3 +34,8 @@ Route::post('/Login', [LoginController::class, 'login'])->name('login');
 FacadesAuth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+Route::post('/home', [CategoryController::class, 'store'])->name('home.addCategory');
+Route::post('/home', [CategoryController::class, 'update'])->name('home.editCategory');
+Route::post('/home', [CategoryController::class, 'destroy'])->name('home.deleteCategory');
