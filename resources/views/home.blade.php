@@ -37,7 +37,7 @@
                     <th>identity</th>
                 </thead>
                 <tbody class="text-center">
-                    @php try{
+
                     @foreach ($users as $user)
                     <tr>
                         @if ($user->identity === 2)
@@ -56,7 +56,7 @@
                         </td>
                     </tr>
                     @endforeach
-                    @php }catch(\Exception $e){}
+
                 </tbody>
 
             </table>
@@ -67,19 +67,21 @@
                     <table class="table table-striped table-responsive ms-5">
                         <thead class="table-info text-center">
                             <th>ID#</th>
-                            <th>category name</th>
+                            <th colspan="2">category name</th>
                         </thead>
                         <tbody class="text-center">
                             @foreach ($categories as $category)
                             <tr>
                                 <td>{{$category->id}}</td>
-                                <td>{{$category->name}}</td>
-                                <td>
-                                    <form action="{{route('home.editCategory')}}" method="post">
+                                <td><input type="text" id="txt{{$category->id}}" value="{{$category->name}}" readonly="true" ondblclick="this.readOnly='';"></td>
+                                <td class="d-flex">
+                                    <form action="{{route('home.editCategory',[$category->id])}}" method="post">
                                         @csrf
-                                        <button type="submit" class="btn btn-warning">modify</button>
+
+                                        <input type="hidden" name="update{{$category->id}}" id="update{{$category->id}}" value="">
+                                        <button type="submit" class="btn btn-warning" onclick="document.getElementById('update{{$category->id}}').value=document.getElementById('txt{{$category->id}}').value">modify</button>
                                     </form>
-                                    <form action="{{route('home.deleteCategory')}}" method="post">
+                                    <form action="{{route('home.deleteCategory',[$category->id])}}" method="post">
                                         @csrf
                                         <button type="submit" class="btn btn-danger">delete</button>
                                     </form>
@@ -135,11 +137,4 @@
 <!-- view all items added by this seller and add/delete/modify them -->
 
 @endif
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
-
-
-
 @endsection

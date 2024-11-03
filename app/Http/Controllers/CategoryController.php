@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        echo 'in store method';
+        // echo 'in store method';
         $this->validate($request,  [
             'categoryName' => ['required', 'string'],
         ]);
@@ -38,7 +38,7 @@ class CategoryController extends Controller
         $category = new Category();
         $category->name = $request->input('categoryName');
         $category->save();
-        return redirect('home.addCategory')->with('success', 'category inserted');
+        return redirect('home')->with('success', 'category inserted');
     }
 
     /**
@@ -52,19 +52,25 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) {}
+    public function edit(string $id, Request $request)
+    {
+
+
+        //$this->validate($request->input('categoryName'), ['string']);
+        $category = Category::find($id);
+
+        $name = 'update' . $category->id;
+        // dd($request->all()['update1']);
+        $category->name = $request->input($name);
+
+        $category->save();
+        return redirect('home')->with('success', 'Category updated');
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $this->validate($request->input('categoryName'), ['string']);
-        $category = Category::find($id);
-        $category->name = $request->input('categoryName');
-        $category->save();
-        return redirect('home')->with('success', 'Category updated');
-    }
+    public function update(Request $request) {}
     //
 
 

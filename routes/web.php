@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 /*
@@ -32,10 +33,15 @@ Route::get('/Login', [LoginController::class, 'login_get'])->name('login');
 Route::post('/Login', [LoginController::class, 'login'])->name('login');
 
 FacadesAuth::routes();
+app('router')->getRoutes()->refreshNameLookups();
+app('router')->getRoutes()->refreshActionLookups();
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
-Route::post('/home', [CategoryController::class, 'store'])->name('home.addCategory');
-Route::post('/home', [CategoryController::class, 'update'])->name('home.editCategory');
-Route::post('/home', [CategoryController::class, 'destroy'])->name('home.deleteCategory');
+Route::name('home.addCategory')->post('/home/addCat', [CategoryController::class, 'store']);
+Route::name('home.editCategory')->post('/home/editCat/{id}', [CategoryController::class, 'edit']);
+Route::name('home.deleteCategory')->post('/home/deleteCat/{id}', [CategoryController::class, 'destroy']);
+
+Route::get('UserForms/seller', [ProductController::class, 'index'])->name('sellerProduct');
