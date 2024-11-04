@@ -33,9 +33,13 @@ class HomeController extends Controller
             $products = DB::table('product_view')->get();
             return view('home', ['users' => $users, 'products' => $products, 'categories' => $category]);
         } elseif (Auth::user()->identity === 1) { // customer
-
+            return view('home');
         } else // seller
         {
+            $userID = Auth::user()->id;
+            $category = DB::table('category')->get();
+            $products = DB::table('product_view')->get()->where('sellerAddedIt', '=', $userID);
+            return view('home', ['products' => $products, 'categories' => $category]);
         }
     }
 }

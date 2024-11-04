@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\sellerController;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 /*
@@ -45,3 +46,7 @@ Route::name('home.editCategory')->post('/home/editCat/{id}', [CategoryController
 Route::name('home.deleteCategory')->post('/home/deleteCat/{id}', [CategoryController::class, 'destroy']);
 
 Route::get('UserForms/seller', [ProductController::class, 'index'])->name('sellerProduct');
+
+Route::name('seller.addProduct')->post('/seller/addProd', [sellerController::class, 'store']);
+Route::name('seller.editProduct')->post('/seller/editProd/{id}', [sellerController::class, 'edit']);
+Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [sellerController::class, 'destroy']);

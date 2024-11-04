@@ -133,8 +133,10 @@
 </div>
 @elseif(Auth::guest() || Auth::user()->identity) <!--guest or customer-->
 <!-- view all items to the customer to choose from them and add to the cart -->
-@else <!-- seller-->
-<!-- view all items added by this seller and add/delete/modify them -->
 
+@else
+<!-- seller-->
+<!-- view all items added by this seller and add/delete/modify them -->
+@include ('UserForms.seller')
 @endif
 @endsection
