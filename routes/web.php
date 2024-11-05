@@ -49,5 +49,5 @@ Route::name('seller.addProduct')->post('/seller/addProd', [ProductController::cl
 Route::name('seller.editProduct')->post('/seller/editProd/{id}', [ProductController::class, 'edit']);
 Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductController::class, 'destroy']);
 
-Route::name('seller')->post('/UserForms/seller', [sellerController::class, 'index']);
-Route::name('seller')->get('/UserForms/seller', [sellerController::class, 'index']);
+Route::name('seller')->post('/seller', [sellerController::class, 'index']);
+Route::name('seller')->get('/seller', [sellerController::class, 'index']);

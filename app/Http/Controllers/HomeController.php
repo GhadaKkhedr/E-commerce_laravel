@@ -36,10 +36,12 @@ class HomeController extends Controller
             return view('home');
         } else // seller
         {
+            // echo "in Home controller" . Auth::user()->identity;
             $userID = Auth::user()->id;
             $category = DB::table('category')->get();
-            $products = DB::table('product_view')->get()->where('sellerAddedIt', '=', $userID);
-            return view('home', ['products' => $products, 'categories' => $category]);
+            $products = DB::table('product_view')->get()->where('SellerID', '=', $userID);
+            // dd($products);
+            return view('home', ['sellerProducts' => $products, 'categories' => $category]);
         }
     }
 }

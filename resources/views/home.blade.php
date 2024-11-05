@@ -39,10 +39,11 @@
                 <tbody class="text-center">
 
                     @foreach ($users as $user)
+                    @if ($user->identity === 2)
+                    @continue;
+                    @endif
                     <tr>
-                        @if ($user->identity === 2)
-                        @continue;
-                        @endif
+
                         <td>{{$user->id}}</td>
                         <td>{{$user->Fname}}</td>
                         <td>{{$user->userName}}</td>
@@ -182,7 +183,7 @@
                             var price = document.getElementById('price' + id).value;
                             var QA = document.getElementById('qA' + id).value;
 
-                            DataToSend = name + ";" + desc + ";" + catName + ";" + price + ";" + QA;
+                            DataToSend = name + ";" + desc + ";" + price + ";" + QA + ";" + catName;
 
                             console.log(DataToSend);
                             return DataToSend;
@@ -200,6 +201,11 @@
 @else
 <!-- seller-->
 <!-- view all items added by this seller and add/delete/modify them -->
+@isset($sellerProducts)
+@include ('UserForms.seller',['sellerProducts'=>$sellerProducts])
+@endisset
+@empty($sellerProducts)
 @include ('UserForms.seller')
+@endempty
 @endif
 @endsection

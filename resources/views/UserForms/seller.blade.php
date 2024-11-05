@@ -7,44 +7,46 @@
                 </div>
                 <div class="card-body">
                     <div class="row panel-group" role="group" id="SellerBtns">
-                        <form action="route{{'seller'}}" method="post" class="d-flex">
-                            @csrf
-                            <div class="col-6 text-center">
-                                <button id="AddNewProductBtn" data-parent="#SellerBtns" type="button" data-target="#NewProductDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="NewProductDiv">Add New Product</button>
-                            </div>
-                            <div class="col-6 text-center">
-                                <button id="ShowProductsBtn" data-parent="#SellerBtns" type="button" data-target="#SellerProductsDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="SellerProductsDiv">Show My Products</button>
-                            </div>
-                        </form>
+                        <div class="col-6 text-center">
+                            <button id="AddNewProductBtn" data-parent="#SellerBtns" type="button" data-target="#NewProductDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="NewProductDiv">Add New Product</button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button id="ShowProductsBtn" type="button" data-parent="#SellerBtns" data-target="#SellerProductsDiv" class="btn btn-outline-info" data-toggle="collapse" aria-expanded="false" aria-controls="SellerProductsDiv">Show My Products</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
     <div id="SellerProductsDiv" class=" panel-collapse collapse in text-center">
-        <div class="row">
-            @foreach ($products as $product)
+        <div class="row m-4 d-flex justify-content-between" id="productCards">
+            @isset($sellerProducts)
+            @foreach ($sellerProducts as $product)
             <div class="col-sm-4">
-                <div class="card border-info mb-3">
-                    <div class="card-header bg-transparent border-info">
-                        {{$categories[$product->categoryID]->name}}
+                <div class="card border-secondary mb-3 text-center">
+                    <div class="text-info card-header bg-transparent border-secondary">
+                        {{$product->CategoryName}}
                     </div>
-                    <img src="..." class="card-img-top" alt="{{$product->ProductName}}">
-                    <div class="card-body text-bg-info">
-                        <h5 class="card-title">{{$product->ProductName}}</h5>
-                        <p class="card-text">{{$product->description}}</p>
-                        <p>price :<span text-bg-info border-info>{{$product->price}}</span></p>
-                        <p>Quantity Available :<span text-bg-info border-info>{{$product->quantityAvailable}}</span></p>
+                    <img src="../{{$product->productImg}}" class="card-img-top mx-auto my-1 d-block" alt="{{$product->productName}}" style="width: 100px;height:100px;">
+                    <div class="card-body text-info">
+                        <p class="card-title" style="font-size: 13px;"><input type="text" class="text-info border-0" id="crdp{{$product->id}}" value="{{$product->productName}}" readonly="true" ondblclick="this.readOnly='';"></p>
+
+                        <p class="card-text"><textarea class="text-info border-0" id="crdDesc{{$product->id}}" readonly="true" style="width:100%" ondblclick="this.readOnly='';">{{$product->description}}</textarea></p>
+                        <p>price :<span text-bg-info border-secondary><input type="number" class="border-0 text-center" value="{{$product->price}}" id="crdPrc{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></span></p>
+                        <p>Quantity Available :<span text-bg-info border-info><input type="number" class="border-0 text-center" id="crdqA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></span></p>
                     </div>
                     <div class="card-footer bg-transparent border-info d-flex">
 
                         <form action="{{route('seller.editProduct',[$product->id])}}" method="post">
                             @csrf
 
-                            <input type="hidden" name="updateProduct{{$product->id}}" id="updateProduct{{$product->id}}" value="">
-                            <button type="submit" class="btn btn-warning" onclick="">modify</button>
+                            <input type="hidden" name="crdUpdateProduct{{$product->id}}" id="crdUpdateProduct{{$product->id}}" value="">
+                            <button type="submit" class="btn btn-warning" onclick="document.getElementById('crdUpdateProduct{{$product->id}}').value=getallCrdValues('{{$product->id}}');">modify</button>
                         </form>
-                        <form action="{{route('seller.deleteProduct',[$product->id])}}" method="post">
+                        <form action=" {{route('seller.deleteProduct',[$product->id])}}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-danger">delete</button>
                         </form>
@@ -53,7 +55,26 @@
                 </div>
             </div>
             @endforeach
+            @endisset
         </div>
+        <script>
+            function getallCrdValues(id) {
+                var DataToSend = "";
+                var name = document.getElementById('crdp' + id).value;
+
+                var desc = document.getElementById('crdDesc' + id).value;
+
+                var price = document.getElementById('crdPrc' + id).value;
+
+                var QA = document.getElementById('crdqA' + id).value;
+
+
+                DataToSend = name + ";" + desc + ";" + price + ";" + QA;
+                //  alert(DataToSend);
+                console.log(DataToSend);
+                return DataToSend;
+            }
+        </script>
     </div>
 
     <div id="NewProductDiv" class=" panel-collapse collapse in text-center">

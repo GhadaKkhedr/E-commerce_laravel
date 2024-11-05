@@ -83,13 +83,19 @@ class ProductController extends Controller
      */
     public function edit(string $id, Request $request)
     {
+        // dd($request->all());
         try {
 
             $product = product::find($id);
 
             //get updated data
             $data = 'updatep' . $product->id;
-            $dataSent =  $request->input($data);
+            $data2 = 'crdUpdateProduct' . $product->id;
+            $dataSent = "";
+            if ($request->has($data))
+                $dataSent =  $request->input($data); // from home page (adminstrator)
+            else
+                $dataSent =  $request->input($data2); //from seller page
             //  dd($dataSent);
             $dataSentArray =  explode(";", $dataSent);
 
@@ -97,17 +103,18 @@ class ProductController extends Controller
             // dd($request->all()['update1']);
             $product->name = $dataSentArray[0];
             $product->description = $dataSentArray[1];
-            $categoryName = $dataSentArray[2];
-            $category = Category::where('name', '=', $categoryName)->get(['id'])->first();
-            $product->price = $dataSentArray[3];
+
+            $product->price = $dataSentArray[2];
+            $product->quantityAvailable = $dataSentArray[3];
+
             // $category = Category::where('name', '=', $request->input('pCat' . $id))->get(['id'])->first();
             // dd($request->input('pCatp' . $id));
-
-            $product->categoryID = $category->id;
-
             //  $product->CategoryName = $request->input('pCat' . $id);
-            $product->quantityAvailable = $dataSentArray[4];
-
+            if ($request->has($data)) {
+                $categoryName = $dataSentArray[4];
+                $category = Category::where('name', '=', $categoryName)->get(['id'])->first();
+                $product->categoryID = $category->id;
+            }
             // dd($product);
             $product->save();
             return redirect('home')->with('success', 'product updated!');
