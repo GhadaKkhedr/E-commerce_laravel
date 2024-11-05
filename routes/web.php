@@ -23,9 +23,7 @@ use Illuminate\Support\Facades\Auth as FacadesAuth;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name("home");
+//Route::get('/', function () {    return view('home');})->name("home");
 
 Route::get('/Register', [RegisterController::class, 'Register_get'])->name('Register');
 Route::post('/Register', [RegisterController::class, 'Register'])->name('Register_route');
@@ -39,14 +37,17 @@ app('router')->getRoutes()->refreshActionLookups();
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::name('home.addCategory')->post('/home/addCat', [CategoryController::class, 'store']);
 Route::name('home.editCategory')->post('/home/editCat/{id}', [CategoryController::class, 'edit']);
 Route::name('home.deleteCategory')->post('/home/deleteCat/{id}', [CategoryController::class, 'destroy']);
 
-Route::get('UserForms/seller', [ProductController::class, 'index'])->name('sellerProduct');
 
-Route::name('seller.addProduct')->post('/seller/addProd', [sellerController::class, 'store']);
-Route::name('seller.editProduct')->post('/seller/editProd/{id}', [sellerController::class, 'edit']);
-Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [sellerController::class, 'destroy']);
+
+Route::name('seller.addProduct')->post('/seller/addProd', [ProductController::class, 'store']);
+Route::name('seller.editProduct')->post('/seller/editProd/{id}', [ProductController::class, 'edit']);
+Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductController::class, 'destroy']);
+
+Route::name('seller')->post('/UserForms/seller', [sellerController::class, 'index']);
+Route::name('seller')->get('/UserForms/seller', [sellerController::class, 'index']);

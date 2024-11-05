@@ -14,7 +14,7 @@ return new class extends Migration
     {
         $query = "CREATE or replace VIEW Product_view AS
                 SELECT product.id, product.name as productName, category.name as CategoryName , users.Fname as sellerName,
-	            product.description , product.price , product.quantityAvailable
+	            product.description , product.price , product.quantityAvailable , product.pImage as productImage
                 FROM product , users , category
                 WHERE product.categoryID = category.id and product.sellerAddedIt = users.id;";
 

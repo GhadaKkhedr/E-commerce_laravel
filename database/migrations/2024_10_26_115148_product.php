@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,7 +15,7 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->longText('description');
             $table->bigInteger('categoryID');
             $table->bigInteger('price');
             $table->bigInteger('sellerAddedIt');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->foreign('categoryID')->references('id')->on('category')->onDelete('cascade');
             $table->foreign('sellerID')->references('id')->on('users')->onDelete('cascade');
         });
+        DB::statement("ALTER TABLE `product` ADD `pImage` TEXT NULL DEFAULT NULL ;");
     }
 
     /**
