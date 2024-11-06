@@ -34,9 +34,9 @@ class HomeController extends Controller
             $products = DB::table('product_view')->get();
             return view('home', ['users' => $users, 'products' => $products, 'categories' => $category]);
         } elseif (Auth::user()->identity === 1) { // customer
-            $controller = new ProductController();
-            return $controller->filter($request);
-            //return redirect()->route('search');
+            //$controller = new ProductController();
+            //return $controller->filter($request);
+            return redirect()->route('search');
         } else // seller
         {
             // echo "in Home controller" . Auth::user()->identity;

@@ -1,10 +1,12 @@
 <div>
     <!-- It is never too late to be what you might have been. - George Eliot -->
     @isset($AllCategories)
+
     <div class="container mx-auto d-flex justify-content-around">
-        <form action="" method="post">
+        <form action=" {{route('searchCat')}}" method="get" id="btnFormCat">
+            <input type="hidden" class="keywordCat" value="" name="keywordCat">
             @foreach ($AllCategories as $category)
-            <button class="btn btn-outline-info " type="submit" style="border-radius: 10px;">{{$category->name}}</button>
+            <button class="btn btn-outline-info " type="submit" style="border-radius: 10px;" id="{{$category->name}}" onclick="document.getElementsByClassName('keywordCat')[0].value=document.getElementById('{{$category->name}}').id">{{$category->name}}</button>
             @endforeach
         </form>
     </div>
@@ -12,13 +14,14 @@
     <div class="row m-4 d-flex justify-content-between border-info-subtle" id="pCards">
         @php
         // $productsSent = isset($filteredProducts)? $filteredProducts: (isset($AllProducts)?$AllProducts : null) ;
-        $productsSent ="";
+        $productsSent =[];
         // echo (count($filteredProducts));
         if(count($filteredProducts)>0)
         $productsSent = $filteredProducts;
         else
+        if(isset($AllProducts))
         $productsSent=$AllProducts;
-
+        // else empty
 
 
         @endphp

@@ -77,23 +77,53 @@ class ProductController extends Controller
     public function filter(Request $request)
     {
 
-        //dd($request->all());
+        //  echo ($request->has("keyword") ? "true" : "false");
         try {
             $keyword = $request->input('keyword', '');
             $filteredProducts = collect();
             if ($keyword) {
-                //       echo ("in filter" . $keyword);
+                echo ("in filter" . $keyword);
                 // $filteredProducts = product_view::whereAny(['productName', 'description', 'CategoryName'], 'LIKE', '%$keyword%')->get();
                 $filteredProducts = product_view::where('productName', 'LIKE', "%$keyword%")
                     ->orWhere('description', 'LIKE', "%$keyword%")
                     ->orWhere('CategoryName', 'LIKE', "%$keyword%")
                     ->get();
             }
+            $AllProducts = [];
             //dd($filteredProducts);
-            $AllProducts = product_view::get();
+            if (empty($keyword)) {
+                $AllProducts = product_view::get();
+            }
             $categories = category::get();
+
+            if (!$request->has('keyword')) //first load
+                return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+            else {
+                //  dd($AllProducts, $filteredProducts, $categories);
+                return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+            }
+        } catch (Exception $exception) {
+            return view('home')->with(['error' => $exception]);
+        }
+    }
+    public function filterByCategory(Request $request)
+    {
+
+
+        try {
+            $keyword = $request->input('keywordCat', '');
+            $filteredProducts = collect();
+            if ($keyword) {
+                //       echo ("in filter" . $keyword);
+                // $filteredProducts = product_view::whereAny(['productName', 'description', 'CategoryName'], 'LIKE', '%$keyword%')->get();
+                $filteredProducts = product_view::where('CategoryName', '=', "$keyword")
+                    ->get();
+            }
+            //dd($filteredProducts);
+
             //  dd($AllProducts, $filteredProducts, $categories);
-            return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+            $categories = category::get();
+            return view('home', ['filteredProducts' => $filteredProducts, 'AllCategories' => $categories]);
         } catch (Exception $exception) {
             return view('home')->with(['error' => $exception]);
         }

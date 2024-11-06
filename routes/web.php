@@ -51,3 +51,4 @@ Route::name('seller.editProduct')->post('/seller/editProd/{id}', [ProductControl
 Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductController::class, 'destroy']);
 
 Route::get('/search', [ProductController::class, 'filter'])->name('search');
+Route::get('/searchCat', [ProductController::class, 'filterByCategory'])->name('searchCat');
