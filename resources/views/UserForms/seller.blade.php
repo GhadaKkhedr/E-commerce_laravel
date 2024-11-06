@@ -38,7 +38,7 @@
                         <p>price :<span text-bg-info border-secondary><input type="number" class="border-0 text-center" value="{{$product->price}}" id="crdPrc{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></span></p>
                         <p>Quantity Available :<span text-bg-info border-info><input type="number" class="border-0 text-center" id="crdqA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></span></p>
                     </div>
-                    <div class="card-footer bg-transparent border-info d-flex">
+                    <div class="card-footer bg-transparent border-info d-flex mx-auto">
 
                         <form action="{{route('seller.editProduct',[$product->id])}}" method="post">
                             @csrf

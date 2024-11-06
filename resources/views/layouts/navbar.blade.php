@@ -47,8 +47,9 @@
                 @endguest
 
             </ul>
-            <form class="d-flex form-inline" role="search">
-                <input class="form-control me-2" type="search" name="searchBox" placeholder="Search" aria-label="Search">
+            <form class="d-flex form-inline" role="search" method="get" action="{{route('search')}}" onsubmit="">
+                @csrf
+                <input class="form-control me-2" type="search" name="keyword" id="keyword" placeholder="Search keyword" aria-label="Search">
                 <button class="btn btn-outline-info" type="submit">Search</button>
             </form>
             <div class="d-flex ms-auto">

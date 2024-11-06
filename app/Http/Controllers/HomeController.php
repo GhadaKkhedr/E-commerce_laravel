@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::user()->identity === 2) //admin
         {
@@ -33,7 +34,9 @@ class HomeController extends Controller
             $products = DB::table('product_view')->get();
             return view('home', ['users' => $users, 'products' => $products, 'categories' => $category]);
         } elseif (Auth::user()->identity === 1) { // customer
-            return view('home');
+            $controller = new ProductController();
+            return $controller->filter($request);
+            //return redirect()->route('search');
         } else // seller
         {
             // echo "in Home controller" . Auth::user()->identity;
@@ -44,4 +47,6 @@ class HomeController extends Controller
             return view('home', ['sellerProducts' => $products, 'categories' => $category]);
         }
     }
+
+    public function filter() {}
 }

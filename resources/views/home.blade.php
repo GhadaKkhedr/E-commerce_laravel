@@ -197,12 +197,19 @@
 </div>
 @elseif(Auth::guest() || Auth::user()->identity) <!--guest or customer-->
 <!-- view all items to the customer to choose from them and add to the cart -->
+@isset($AllProducts)
+@include ('UserForms.customer',['AllProducts'=> $AllProducts])
+@endisset
+@empty($AllProducts)
+@include ('UserForms.customer')
+@endempty
+
 
 @else
 <!-- seller-->
 <!-- view all items added by this seller and add/delete/modify them -->
 @isset($sellerProducts)
-@include ('UserForms.seller',['sellerProducts'=>$sellerProducts])
+@include ('UserForms.seller',['sellerProducts'=> $sellerProducts])
 @endisset
 @empty($sellerProducts)
 @include ('UserForms.seller')

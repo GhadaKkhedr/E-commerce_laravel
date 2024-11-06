@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\sellerController;
+use App\Models\product;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 /*
@@ -49,5 +50,4 @@ Route::name('seller.addProduct')->post('/seller/addProd', [ProductController::cl
 Route::name('seller.editProduct')->post('/seller/editProd/{id}', [ProductController::class, 'edit']);
 Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductController::class, 'destroy']);
 
-Route::name('seller')->post('/seller', [sellerController::class, 'index']);
-Route::name('seller')->get('/seller', [sellerController::class, 'index']);
+Route::get('/search', [ProductController::class, 'filter'])->name('search');

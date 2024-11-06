@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\product;
 use App\Models\category;
+use App\Models\product_view;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -73,10 +74,31 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(product $product)
+    public function filter(Request $request)
     {
-        //
+
+        //dd($request->all());
+        try {
+            $keyword = $request->input('keyword', '');
+            $filteredProducts = collect();
+            if ($keyword) {
+                //       echo ("in filter" . $keyword);
+                // $filteredProducts = product_view::whereAny(['productName', 'description', 'CategoryName'], 'LIKE', '%$keyword%')->get();
+                $filteredProducts = product_view::where('productName', 'LIKE', "%$keyword%")
+                    ->orWhere('description', 'LIKE', "%$keyword%")
+                    ->orWhere('CategoryName', 'LIKE', "%$keyword%")
+                    ->get();
+            }
+            //dd($filteredProducts);
+            $AllProducts = product_view::get();
+            $categories = category::get();
+            //  dd($AllProducts, $filteredProducts, $categories);
+            return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+        } catch (Exception $exception) {
+            return view('home')->with(['error' => $exception]);
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
