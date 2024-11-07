@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
+
 use App\Models\product_view;
 use App\Models\category;
 use App\Models\product;
 use Illuminate\Validation\Rules\Exists;
+
+use function PHPUnit\Framework\throwException;
 
 class CartController extends Controller
 {
@@ -81,13 +84,17 @@ class CartController extends Controller
         $categories = category::get();
 
         try {
-            //   echo ($request->has('quantity' . $prdID));
+            // dd($request[1]);
             if ($request->has('quantity' . $prdID)) {
 
                 $quantity = $request->input('quantity' . $prdID);
                 $this->UpdateProduct($prdID, $quantity);
             } else
+              if ($request->has('count' . $prdID))
                 $this->AddProduct($prdID, $request->input('count' . $prdID));
+
+            else
+                dd('quantity' . $prdID);
             $cart = cart::where('CustomerID', '=', Auth::user()->id)->get()->where('Paid', '=', '0');
             //dd($cart, $AllProducts);
             return view('home', ['cart' => $cart, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);

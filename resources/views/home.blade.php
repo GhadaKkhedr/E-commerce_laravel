@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="container">
+
         <div id="usersDiv" class="panel-collapse collapse in justify-content-center">
             <table class="table table-striped table-responsive m-5">
                 <thead class="table-info text-center">
@@ -71,7 +71,7 @@
                             <th colspan="2">category name</th>
                         </thead>
                         <tbody class="text-center">
-                            @foreach ($categories as $category)
+                            @foreach ($AllCategories as $category)
                             <tr>
                                 <td>{{$category->id}}</td>
                                 <td><input type="text" class="catTxtName" id="txt{{$category->id}}" value="{{$category->name}}" readonly="true" ondblclick="this.readOnly='';"></td>
@@ -117,13 +117,14 @@
                     <th> controllers</th>
                 </thead>
                 <tbody class="text-center">
+
                     @foreach ($AllProducts as $product)
                     <tr>
                         <td>{{$product->id}}</td>
                         <td><input type="text" class="border-0" id="txtp{{$product->id}}" value="{{$product->productName}}" readonly="true" ondblclick="this.readOnly='';"></td>
                         <td style="font-size: smaller;"><textarea class="border-0" id="pDesc{{$product->id}}" value="{{$product->description}}" readonly="true" ondblclick="this.readOnly='';">{{$product->description}}</textarea></td>
                         <td><input type="text" class="border-0" id="p{{$product->id}}" value="{{$product->CategoryName}}" readonly="true" ondblclick="this.readOnly='';getCategories('p{{$product->id}}','{{$product->CategoryName}}');"></td>
-                        <td><input type="number" min=1 class="border-0" value="{{$product->price}}" id="price{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></td>
+                       <td><input type="number" min=1 class="border-0" value="{{$product->price}}" id="price{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></td>
                         <td>{{$product->sellerName}}</td>
                         <td><input type="number" min="1" class="border-0" id="qA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></td>
                         <td><img src="{{ asset($product->productImage) }}" alt="{{ $product->productName }}" class="img-thumbnail rounded-1" style="width: 60px;height:60px"></td>
@@ -193,26 +194,35 @@
 
             </table>
         </div>
-    </div>
+
 </div>
 @elseif(Auth::guest() || Auth::user()->identity) <!--guest or customer-->
 <!-- view all items to the customer to choose from them and add to the cart -->
-@isset($AllProducts)
-@include ('UserForms.customer',['AllProducts'=> $AllProducts])
-@endisset
-@empty($AllProducts)
-@include ('UserForms.customer')
-@endempty
+    @isset($AllProducts)
+    @include ('UserForms.customer',['AllProducts'=> $AllProducts])
+    @endisset
+    @empty($AllProducts)
+    @include ('UserForms.customer')
+    @endempty
 
 
 @else
-<!-- seller-->
-<!-- view all items added by this seller and add/delete/modify them -->
-@isset($sellerProducts)
-@include ('UserForms.seller',['sellerProducts'=> $sellerProducts])
-@endisset
-@empty($sellerProducts)
-@include ('UserForms.seller')
-@endempty
+
+    {{-- Seller section --}}
+    {{-- View all items added by this seller and add/delete/modify them --}}
+
+    @isset($sellerProducts)
+        @include('UserForms.seller', ['sellerProducts' => $sellerProducts])
+
+    @elseif(isset($filteredProducts) && !empty($filteredProducts))
+        {{ dd($filteredProducts) }}
+        @include('UserForms.seller', ['filteredProducts' => $filteredProducts])
+
+    @else
+        @include('UserForms.seller')
+    @endisset
+
 @endif
 @endsection
+
+

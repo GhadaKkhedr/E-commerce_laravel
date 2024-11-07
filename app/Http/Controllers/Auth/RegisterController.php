@@ -99,13 +99,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //echo json_encode($data);
+        $identity = false;
+        if ($data['identity'] === '"1"')
+            $identity = true;
+
+        //    dd($data);
         return User::create([
             'Fname' => $data['FName'],
             'email' => $data['Email'],
             'userName' => $data['userName'],
             'password' => Hash::make($data['Password']),
-            'identity' => $data['identity'] === '1' ? true : false,
+            'identity' => $identity,
         ]);
     }
 }

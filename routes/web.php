@@ -54,7 +54,7 @@ Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductCon
 Route::get('/search', [ProductController::class, 'filter'])->name('search');
 Route::get('/searchCat', [ProductController::class, 'filterByCategory'])->name('searchCat');
 
-Route::get('/customer/addPrdcart/{id}', [CartController::class, 'index'])->name('addtoCart');
+//Route::get('/customer/addPrdcart/{id}', [CartController::class, 'index'])->name('addtoCart');
 
 Route::get('/cart/{newP}', [CartController::class, 'show'])->name('previewCart');
 Route::post('/dltCrtItm/{id}', [CartController::class, 'destroy'])->name('deleteCartItem');

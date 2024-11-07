@@ -21,8 +21,9 @@
     </div>
 
 
-    <div id="SellerProductsDiv" class=" panel-collapse collapse in text-center">
+    <div id="SellerProductsDiv" class="panel-collapse collapse in text-center">
         <div class="row m-4 d-flex justify-content-between" id="productCards">
+
             @isset($sellerProducts)
             @foreach ($sellerProducts as $product)
             <div class="col-sm-4">
@@ -115,10 +116,12 @@
                                 -- Categories --
                             </button>
                             <ul class="dropdown-menu" role="menu" border-info-subtle" id="categoryItems" aria-labelledby="CategoriesBtn">
-                                @foreach ($categories as $category)
+
+                                @foreach ($AllCategories as $category)
                                 <li id="category{{$category->id}}" value="category{{$category->id}}" class="dropdown-item" role="menuitem"><button class="dropdown-item" type="button">{{$category->name}}</button></li>
 
                                 @endforeach
+
                             </ul>
                         </div>
                     </div>

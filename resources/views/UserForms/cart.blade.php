@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('layouts.header')
 
 
-<body>
     <!-- Sliding cart-->
     <div id="slider" class="cart">
         <i class="fa-regular fa-circle-left"> show cart</i>
@@ -28,7 +24,8 @@
 
                             </div>
                             <div class="d-flex col-3" >
-                                <form>
+                                <form action="{{ route('previewCart',[$cartItem->productID]) }}">
+                                    @csrf
                                 <input min="1" name="quantity{{$cartItem->productID}}" value="{{$cartItem->CountOfProductID}}" type="number"
                                     class="form-control" />
                                     <button class="btn btn-info p-0" type="submit" style="width:40px;height: 20px;font-size:20%">update</button>
@@ -59,6 +56,6 @@
 
 
 
-</body>
 
-</html>
+
+

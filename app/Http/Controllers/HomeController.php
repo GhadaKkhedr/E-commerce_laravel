@@ -32,7 +32,7 @@ class HomeController extends Controller
             //  echo json_encode($users);
             $category = DB::table('category')->get();
             $products = DB::table('product_view')->get();
-            return view('home', ['users' => $users, 'AllProducts' => $products, 'categories' => $category]);
+            return view('home', ['users' => $users, 'AllProducts' => $products, 'AllCategories' => $category]);
         } elseif (Auth::user()->identity === 1) { // customer
             //$controller = new ProductController();
             //return $controller->filter($request);
@@ -44,7 +44,7 @@ class HomeController extends Controller
             $category = DB::table('category')->get();
             $products = DB::table('product_view')->get()->where('SellerID', '=', $userID);
             // dd($products);
-            return view('home', ['sellerProducts' => $products, 'categories' => $category]);
+            return view('home', ['sellerProducts' => $products, 'AllCategories' => $category]);
         }
     }
 }

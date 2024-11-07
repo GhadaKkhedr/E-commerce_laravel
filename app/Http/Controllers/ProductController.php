@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\product;
 use App\Models\category;
 use App\Models\product_view;
+use App\Models\cart;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -89,19 +91,45 @@ class ProductController extends Controller
                     ->orWhere('description', 'LIKE', "%$keyword%")
                     ->orWhere('CategoryName', 'LIKE', "%$keyword%")
                     ->get();
+                if (!Auth::user()->identity) { //seller
+                    $filteredProducts = product_view::where('sellerName', '=', Auth::user()->name)
+                        ->where('productName', 'LIKE', "%$keyword%")
+                        ->orWhere('description', 'LIKE', "%$keyword%")
+                        ->orWhere('CategoryName', 'LIKE', "%$keyword%")
+                        ->get();
+                    //dd($filteredProducts);
+                }
             }
+
             $AllProducts = collect();
             //dd($filteredProducts);
-            if (empty($keyword)) {
+            if (empty($keyword) || (Auth::user()->identity === 2)) {
                 $AllProducts = product_view::get();
             }
-
-
+            $cart = "";
+            $users = "";
+            if (Auth::user()->identity === 1) {
+                $cart = cart::where('CustomerID', '=', Auth::user()->id)
+                    ->where('Paid', '=', '0')
+                    ->get();
+            }
+            if (Auth::user()->identity === 2) //admin
+                $users = User::get();
             if (!$request->has('keyword')) //first load
-                return view('home', ['AllProducts' => $AllProducts, 'AllCategories' => $categories]);
-            else {
-                //  dd($AllProducts, $filteredProducts, $categories);
-                return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+            {
+                if (Auth::user()->identity === 1)
+                    return view('home', ['cart' => $cart, 'filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+                else
+                    return view('home', ['AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+            } else {
+                if (!Auth::user()->identity) //seller
+                    return view('home', ['sellerProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+                else
+                if (Auth::user()->identity === 1) //customer
+                    return view('home', ['cart' => $cart, 'filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+
+                else //admin
+                    return view('home', ['users' => $users, 'filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
             }
         } catch (Exception $exception) {
             return view('home')->with(['error' => $exception]);

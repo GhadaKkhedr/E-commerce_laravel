@@ -43,11 +43,14 @@
                 @endguest
 
             </ul>
+
+            @if(!Auth::guest() && Auth::user()->identity !== 2)
             <form class="d-flex form-inline" role="search" method="get" action="{{route('search')}}">
                 @csrf
                 <input class="form-control me-2" type="search" name="keyword" id="keyword" placeholder="Search keyword" aria-label="Search">
                 <button class="btn btn-outline-info" type="submit">Search</button>
             </form>
+            @endif
             <div class="d-flex ms-auto">
                 @if (!Auth::guest())
                 <h6 style="margin-right:300px ;">Welcome {{ Auth::user()->userName}}</h6>
@@ -55,7 +58,7 @@
             </div>
         </div>
     </div>
-    @if(!Auth::guest() && Auth::user()->identity)
+    @if(!Auth::guest() && Auth::user()->identity === 1)
         @if(isset($cart))
         @include('UserForms.cart',$cart)
         @else
