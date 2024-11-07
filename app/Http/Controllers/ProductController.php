@@ -80,24 +80,25 @@ class ProductController extends Controller
         //  echo ($request->has("keyword") ? "true" : "false");
         try {
             $keyword = $request->input('keyword', '');
+            $categories = category::get();
             $filteredProducts = collect();
             if ($keyword) {
-                echo ("in filter" . $keyword);
+                //echo ("in filter" . $keyword);
                 // $filteredProducts = product_view::whereAny(['productName', 'description', 'CategoryName'], 'LIKE', '%$keyword%')->get();
                 $filteredProducts = product_view::where('productName', 'LIKE', "%$keyword%")
                     ->orWhere('description', 'LIKE', "%$keyword%")
                     ->orWhere('CategoryName', 'LIKE', "%$keyword%")
                     ->get();
             }
-            $AllProducts = [];
+            $AllProducts = collect();
             //dd($filteredProducts);
             if (empty($keyword)) {
                 $AllProducts = product_view::get();
             }
-            $categories = category::get();
+
 
             if (!$request->has('keyword')) //first load
-                return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);
+                return view('home', ['AllProducts' => $AllProducts, 'AllCategories' => $categories]);
             else {
                 //  dd($AllProducts, $filteredProducts, $categories);
                 return view('home', ['filteredProducts' => $filteredProducts, 'AllProducts' => $AllProducts, 'AllCategories' => $categories]);

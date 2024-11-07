@@ -39,11 +39,7 @@
                         </form>
                     </div>
                 </li>
-                @if(!Auth::guest() && Auth::user()->identity)
-                <li class="nav-item">
-                    <a class="nav-link text-info" href="/cart">Cart </a>
-                </li>
-                @endif
+
                 @endguest
 
             </ul>
@@ -54,9 +50,16 @@
             </form>
             <div class="d-flex ms-auto">
                 @if (!Auth::guest())
-                <h6>Welcome {{ Auth::user()->userName}}</h6>
+                <h6 style="margin-right:300px ;">Welcome {{ Auth::user()->userName}}</h6>
                 @endif
             </div>
         </div>
     </div>
+    @if(!Auth::guest() && Auth::user()->identity)
+        @if(isset($cart))
+        @include('UserForms.cart',$cart)
+        @else
+        @include('UserForms.cart')
+        @endif
+    @endif
 </nav>

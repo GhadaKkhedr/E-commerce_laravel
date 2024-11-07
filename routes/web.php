@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\sellerController;
@@ -52,3 +53,8 @@ Route::name('seller.deleteProduct')->post('/seller/deleteProd/{id}', [ProductCon
 
 Route::get('/search', [ProductController::class, 'filter'])->name('search');
 Route::get('/searchCat', [ProductController::class, 'filterByCategory'])->name('searchCat');
+
+Route::get('/customer/addPrdcart/{id}', [CartController::class, 'index'])->name('addtoCart');
+
+Route::get('/cart/{newP}', [CartController::class, 'show'])->name('previewCart');
+Route::post('/dltCrtItm/{id}', [CartController::class, 'destroy'])->name('deleteCartItem');

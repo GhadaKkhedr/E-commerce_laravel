@@ -15,8 +15,7 @@
         @php
         // $productsSent = isset($filteredProducts)? $filteredProducts: (isset($AllProducts)?$AllProducts : null) ;
         $productsSent =[];
-        // echo (count($filteredProducts));
-        if(count($filteredProducts)>0)
+        if (isset($filteredProducts) && (count($filteredProducts)>0))
         $productsSent = $filteredProducts;
         else
         if(isset($AllProducts))
@@ -42,10 +41,10 @@
                 </div>
                 <div class="card-footer bg-transparent border-info d-flex mx-auto">
 
-                    <form action="{{route('seller.editProduct',[$product->id])}}" method="post">
+                    <form action="{{route('previewCart',[$product->id])}}" method="get">
                         @csrf
 
-                        <input type="hidden" name="N{{$product->id}}" id="ID{{$product->id}}" value="">
+                        <input type="number" name="count{{$product->id}}" id="count{{$product->id}}" value="1" min="1" max="{{$product->quantityAvailable}}">
                         <button type="submit" class="btn btn-info text-light " style="border-radius: 10px;">Add to Cart</button>
                     </form>
                 </div>

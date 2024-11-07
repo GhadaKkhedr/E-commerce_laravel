@@ -35,8 +35,8 @@
                         <p class="card-title" style="font-size: 13px;"><input type="text" class="text-info border-0" id="crdp{{$product->id}}" value="{{$product->productName}}" readonly="true" ondblclick="this.readOnly='';"></p>
 
                         <p class="card-text"><textarea class="text-info border-0" id="crdDesc{{$product->id}}" readonly="true" style="width:100%" ondblclick="this.readOnly='';">{{$product->description}}</textarea></p>
-                        <p>price :<span text-bg-info border-secondary><input type="number" class="border-0 text-center" value="{{$product->price}}" id="crdPrc{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></span></p>
-                        <p>Quantity Available :<span text-bg-info border-info><input type="number" class="border-0 text-center" id="crdqA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></span></p>
+                        <p>price :<span text-bg-info border-secondary><input type="number" min="1" class="border-0 text-center" value="{{$product->price}}" id="crdPrc{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></span></p>
+                        <p>Quantity Available :<span text-bg-info border-info><input type="number" min="1" class="border-0 text-center" id="crdqA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></span></p>
                     </div>
                     <div class="card-footer bg-transparent border-info d-flex mx-auto">
 

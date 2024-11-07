@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class cart extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'CustomerID',
+        'productID',
+        'CountOfProductID',
+        'Paid'
+    ];
+    protected $table = 'cart';
 }

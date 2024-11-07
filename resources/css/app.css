@@ -1,0 +1,43 @@
+  .cart {
+    overflow:hidden;
+    height:20px;
+    width:100%;
+    position:fixed;
+    background-color:lightgrey;
+    z-index: 1;
+    color: rgb(87, 59, 7);
+    margin-left: 85%
+
+}
+.slider {
+    width:400px;
+    height:100vh;
+    position:fixed;
+    padding: 10px;
+    top: 40px;
+    right:-400px;
+    background-color:lightgray;
+    color:black;
+    justify-content: center;
+    font-style: italic;
+    transition:0.4s ease;
+}
+.cart:hover {
+    cursor: pointer;
+}
+.cart:hover .slider {
+    cursor:default;
+  right:0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

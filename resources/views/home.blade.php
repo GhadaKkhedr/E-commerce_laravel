@@ -117,15 +117,15 @@
                     <th> controllers</th>
                 </thead>
                 <tbody class="text-center">
-                    @foreach ($products as $product)
+                    @foreach ($AllProducts as $product)
                     <tr>
                         <td>{{$product->id}}</td>
                         <td><input type="text" class="border-0" id="txtp{{$product->id}}" value="{{$product->productName}}" readonly="true" ondblclick="this.readOnly='';"></td>
                         <td style="font-size: smaller;"><textarea class="border-0" id="pDesc{{$product->id}}" value="{{$product->description}}" readonly="true" ondblclick="this.readOnly='';">{{$product->description}}</textarea></td>
                         <td><input type="text" class="border-0" id="p{{$product->id}}" value="{{$product->CategoryName}}" readonly="true" ondblclick="this.readOnly='';getCategories('p{{$product->id}}','{{$product->CategoryName}}');"></td>
-                        <td><input type="number" class="border-0" value="{{$product->price}}" id="price{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></td>
+                        <td><input type="number" min=1 class="border-0" value="{{$product->price}}" id="price{{$product->id}}" readonly="true" ondblclick="this.readOnly='';"></td>
                         <td>{{$product->sellerName}}</td>
-                        <td><input type="number" class="border-0" id="qA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></td>
+                        <td><input type="number" min="1" class="border-0" id="qA{{ $product->id }}" value="{{$product->quantityAvailable}}" ondblclick="this.readOnly='';"></td>
                         <td><img src="{{ asset($product->productImage) }}" alt="{{ $product->productName }}" class="img-thumbnail rounded-1" style="width: 60px;height:60px"></td>
                         <td class="d-flex">
                             <form action="{{route('seller.editProduct',[$product->id])}}" method="post">
